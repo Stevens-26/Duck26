@@ -1,0 +1,14 @@
+# DuckBot Config Settings
+# =====================================================================================================
+# token: The token used by the bot when connecting to the discord api
+# cogs: The list of cogs to be loaded
+# prefix: The command prefix which the bot will use
+
+[DuckBot]
+token = "Insert Token Here"
+cogs = ["cogs.commands.reaction_roles_command", "cogs.events.reaction_event", "cogs.commands.ping_command"]
+prefix = "!db"
+
+# addReactionRoles: The roles which can use the add reaction roles command. Each role is represented by the role id
+[Permissions]
+addReactionRoles=[]
