@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 duck_bot_config.toml
+reaction_roles.json
 
 # C extensions
 *.so
