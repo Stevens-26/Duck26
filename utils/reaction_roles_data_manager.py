@@ -57,7 +57,10 @@ class ReactionRolesDataManager:
         :param emoji: The string name of the emoji
         :return:
         """
-        reaction = (self.reaction_roles[message_id])[emoji]
+        try:
+            reaction = (self.reaction_roles[message_id])[emoji]
+        except KeyError:
+            return None
         return reaction["role_id"]
 
     def add_reaction_role(self, message_id, emoji_name, role_id):
