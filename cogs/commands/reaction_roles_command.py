@@ -11,10 +11,11 @@ class ReactionRoleCommand(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    def clean_emoji_name(self, emoji):
+    @staticmethod
+    def clean_emoji_name(emoji):
         if "<:" in emoji:
             emoji = emoji[2:]
-            return (emoji[:emoji.index(":")])
+            return emoji[:emoji.index(":")]
         return emoji
 
     @commands.group(name="rr")
@@ -24,11 +25,22 @@ class ReactionRoleCommand(commands.Cog):
             await ctx.send("Please use one of the subcommands! ``add, remove, clear, list``")
 
     @reaction_role.group()
-    async def add(self, ctx, message_id, emoji_name, role: discord.Role):
+    async def add(self, ctx, message_id, _emoji_name, role: discord.Role):
         """ Adds the given message and emoji as a reaction role. """
         if PermissionManager.get_instance().check_member_permission(ctx.author):
-            emoji_name = self.clean_emoji_name(emoji_name)
+
+            emoji_name = self.clean_emoji_name(_emoji_name)
+            msg = await ctx.fetch_message(int(message_id))
             ReactionRolesDataManager.get_instance().add_reaction_role(message_id, emoji_name, role.id)
+
+            try:
+                await msg.add_reaction(_emoji_name)
+            except Exception as e:
+                if "Unknown Emoji" in str(e):
+                    await ctx.send(
+                        "**ERROR**: Unable to add reaction! The reaction-role will work once the emoji is manually "
+                        "added!")
+
             await ctx.send("Reaction role Added!")
 
     @add.error
@@ -92,7 +104,7 @@ class ReactionRoleCommand(commands.Cog):
             # Iterates over all reaction roles for the given message, adds each to the embed
             for reaction_role in reaction_roles:
                 description += f"""{reaction_role} <@&{ReactionRolesDataManager.get_instance().get_role_id(
-                int(message_id), reaction_role)}>\n"""
+                    int(message_id), reaction_role)}>\n"""
 
             embed.description = description
 
