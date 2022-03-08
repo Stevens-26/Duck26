@@ -1,7 +1,7 @@
 from discord.ext import commands
 
-from bot.utils.permission_manager import PermissionManager
-from bot.utils.reaction_roles_data_manager import ReactionRolesDataManager
+from utils.permission_manager import PermissionManager
+from utils.reaction_roles_data_manager import ReactionRolesDataManager
 
 
 class DuckBot(commands.Bot):
