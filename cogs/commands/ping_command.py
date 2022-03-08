@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-from bot.utils.permission_manager import PermissionManager
+from utils.permission_manager import PermissionManager
 
 
 class Ping(commands.Cog):

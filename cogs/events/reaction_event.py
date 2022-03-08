@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord.utils import get
 
-from bot.utils.reaction_roles_data_manager import ReactionRolesDataManager
+from utils.reaction_roles_data_manager import ReactionRolesDataManager
 
 
 class ReactionEvent(commands.Cog):

@@ -1,7 +1,7 @@
 import discord
 import toml
 
-from bot.duck_bot import DuckBot
+from duck_bot import DuckBot
 
 
 def load_config_data():
