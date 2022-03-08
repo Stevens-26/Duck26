@@ -11,6 +11,12 @@ class ReactionRoleCommand(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    def clean_emoji_name(self, emoji):
+        if "<:" in emoji:
+            emoji = emoji[2:]
+            return (emoji[:emoji.index(":")])
+        return emoji
+
     @commands.group(name="rr")
     async def reaction_role(self, ctx):
         """ The base group command for reaction roles. """
@@ -21,6 +27,7 @@ class ReactionRoleCommand(commands.Cog):
     async def add(self, ctx, message_id, emoji_name, role: discord.Role):
         """ Adds the given message and emoji as a reaction role. """
         if PermissionManager.get_instance().check_member_permission(ctx.author):
+            emoji_name = self.clean_emoji_name(emoji_name)
             ReactionRolesDataManager.get_instance().add_reaction_role(message_id, emoji_name, role.id)
             await ctx.send("Reaction role Added!")
 
@@ -32,6 +39,7 @@ class ReactionRoleCommand(commands.Cog):
 
         else:
             await ctx.send("There was an error adding the reaction role!")
+            print(error)
 
     @reaction_role.group()
     async def remove(self, ctx, message_id, emoji_name):
