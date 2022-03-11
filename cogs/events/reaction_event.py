@@ -68,7 +68,7 @@ class ReactionEvent(commands.Cog):
                 message = await channel.fetch_message(payload.message_id)
                 reaction = get(message.reactions, emoji=payload.emoji.name)
 
-                if reaction.count >= StarboardManager.get_instance().reaction_threshold:
+                if reaction and reaction.count >= StarboardManager.get_instance().reaction_threshold:
                     starboard_channel = self.client.get_channel(StarboardManager.get_instance().channel_id)
 
                     embed = discord.Embed(description=message.content, color=10692152)
