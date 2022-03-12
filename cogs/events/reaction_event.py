@@ -1,7 +1,9 @@
+import discord
 from discord.ext import commands
 from discord.utils import get
 
 from utils.reaction_roles_data_manager import ReactionRolesDataManager
+from utils.starboard_manager import StarboardManager
 
 
 class ReactionEvent(commands.Cog):
@@ -48,6 +50,32 @@ class ReactionEvent(commands.Cog):
 
                 if role in member.roles:
                     await member.remove_roles(role)
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        """
+        Called whenever a reaction is added in a guild. Handles starboard reactions
+        """
+
+        if payload.member.id == self.client.user.id:
+            return
+
+        if payload.emoji.name == StarboardManager.get_instance().emoji:
+
+            if payload.message_id not in StarboardManager.get_instance().messages:
+
+                channel = self.client.get_channel(payload.channel_id)
+                message = await channel.fetch_message(payload.message_id)
+                reaction = get(message.reactions, emoji=payload.emoji.name)
+
+                if reaction and reaction.count >= StarboardManager.get_instance().reaction_threshold:
+                    starboard_channel = self.client.get_channel(StarboardManager.get_instance().channel_id)
+
+                    embed = discord.Embed(description=message.content, color=10692152)
+                    embed.set_footer(text=f"By {message.author}")
+
+                    StarboardManager.get_instance().add_message(payload.message_id)
+                    await starboard_channel.send(embed=embed)
 
 
 def setup(client):

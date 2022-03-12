@@ -2,6 +2,7 @@ from discord.ext import commands
 
 from utils.permission_manager import PermissionManager
 from utils.reaction_roles_data_manager import ReactionRolesDataManager
+from utils.starboard_manager import StarboardManager
 
 
 class DuckBot(commands.Bot):
@@ -17,6 +18,7 @@ class DuckBot(commands.Bot):
 
         ReactionRolesDataManager.create_instance()
         PermissionManager(self.bot_config.get("Permissions"))
+        StarboardManager(self.bot_config.get("Starboard"))
         self.load_cogs()
 
     def load_cogs(self):

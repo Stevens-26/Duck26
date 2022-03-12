@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 duck_bot_config.toml
 reaction_roles.json
+starboard_messages.json
 
 # C extensions
 *.so

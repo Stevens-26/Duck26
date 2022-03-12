@@ -12,3 +12,11 @@ prefix = "!db"
 # addReactionRoles: The roles which can use the add reaction roles command. Each role is represented by the role id
 [Permissions]
 addReactionRoles=[]
+
+# reactionThreshold: The minimum number of reactions needed to add a message to the starboard
+# starboardEmoji: The reaction used for starboard emoji's
+# starboardChannelId: The channel were starboard messages should be sent
+[Starboard]
+reactionThreshold = 5
+starboardEmoji = "⭐"
+starboardChannelId = # Some discord channel id
