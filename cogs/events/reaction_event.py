@@ -71,11 +71,29 @@ class ReactionEvent(commands.Cog):
                 if reaction and reaction.count >= StarboardManager.get_instance().reaction_threshold:
                     starboard_channel = self.client.get_channel(StarboardManager.get_instance().channel_id)
 
-                    embed = discord.Embed(description=message.content, color=10692152)
-                    embed.set_footer(text=f"By {message.author}")
+                    embed = discord.Embed(description=message.content, color=discord.Color.gold())
+                    embed.set_footer(text=f"By {message.author} | {reaction.count} reactions")
 
-                    StarboardManager.get_instance().add_message(payload.message_id)
-                    await starboard_channel.send(embed=embed)
+                    msg = await starboard_channel.send(embed=embed)
+                    StarboardManager.get_instance().add_message(payload.message_id, msg.id)
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self, payload):
+        """ Handles the starboard reaction removals. """
+
+        if payload.message_id in StarboardManager.get_instance().messages:
+
+            channel = self.client.get_channel(payload.channel_id)
+            message = await channel.fetch_message(payload.message_id)
+            reaction = get(message.reactions, emoji=payload.emoji.name)
+
+            if (reaction and reaction.count < StarboardManager.get_instance().reaction_threshold) or reaction is None:
+
+                starboard_message_id = StarboardManager.get_instance().delete_message(payload.message_id)
+                starboard_channel = self.client.get_channel(StarboardManager.get_instance().channel_id)
+                starboard_message = await starboard_channel.fetch_message(starboard_message_id)
+
+                await starboard_message.delete()
 
 
 def setup(client):
