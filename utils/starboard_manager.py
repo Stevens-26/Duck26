@@ -20,10 +20,9 @@ class StarboardManager:
     @staticmethod
     def create_embed(channel, message, reaction):
         """ Creates the starboard embeds """
-        embed = discord.Embed(description=message.content, color=discord.Color.gold())
-        embed.add_field(name="Original Message Link", value=f"[original message](https://discordapp.com"
-                                                            f"/channels/{message.guild.id}/{channel.id}/"
-                                                            f"{message.id})")
+        embed = discord.Embed(description=message.content + f"\n \n[original message link](https://discordapp.com/channels/"
+                                                            f"{message.guild.id}/{channel.id}/"f"{message.id})",
+                              color=discord.Color.gold())
         embed.set_footer(text=f"By {message.author} | {reaction.count} reactions | ")
 
         return embed
