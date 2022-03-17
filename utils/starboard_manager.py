@@ -1,5 +1,7 @@
 import json
 
+import discord
+
 
 class StarboardManager:
 
@@ -14,6 +16,17 @@ class StarboardManager:
         """
 
         return StarboardManager.instance
+
+    @staticmethod
+    def create_embed(channel, message, reaction):
+        """ Creates the starboard embeds """
+        embed = discord.Embed(description=message.content, color=discord.Color.gold())
+        embed.add_field(name="Original Message Link", value=f"[original message](https://discordapp.com"
+                                                            f"/channels/{message.guild.id}/{channel.id}/"
+                                                            f"{message.id})")
+        embed.set_footer(text=f"By {message.author} | {reaction.count} reactions | ")
+
+        return embed
 
     def __init__(self, starboard_toml):
 
@@ -42,7 +55,7 @@ class StarboardManager:
             with open("starboard_messages.json", "w") as f:
                 json.dump(file, f)
 
-        self.messages = [int(i) for i in file.keys()]
+        self.messages = list(map(int, file.keys()))
         self.messages_dict = file
 
     def add_message(self, new_message_id, starboard_message_id):
@@ -77,4 +90,6 @@ class StarboardManager:
         self.remove_message(message_id)
 
         return starboard_message_id
+
+
 
